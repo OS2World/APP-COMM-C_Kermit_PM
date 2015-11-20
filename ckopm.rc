@@ -1,0 +1,15 @@
+/******************************************************************************
+File name:  ckopm.rc  Rev: 01  Date: 27-Jan-90 Programmer: C.P.Armstrong
+
+File title: Resource file source for ckopm.c
+
+Contents:   
+
+Modification History:
+    01  27-Jan-90   C.P.Armstrong   created
+
+******************************************************************************/
+#include <os2.h>
+#include "ckopm.h"
+
+POINTER ID_RESOURCE ckoptr.ptr

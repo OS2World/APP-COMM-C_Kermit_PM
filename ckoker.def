@@ -1,0 +1,17 @@
+; CKOKER for the PM
+; N.B. The stack does not need to be at least 8192 as suggested in the Petzold
+; book since the window thread is started from within the program and the
+; stack is allocated from the main memory (using malloc).
+
+NAME        CKOKER      WINDOWAPI
+
+DESCRIPTION 'C-Kermit for the OS/2 Presentation Manager'
+HEAPSIZE    3000
+STACKSIZE   4000
+EXPORTS     VioWndProc
+EXPORTS     GpiWndProc
+EXPORTS     ComsDlgProc
+EXPORTS     TermDlgProc
+EXPORTS     FileOpnDlgProc
+EXPORTS     FileClsDlgProc
+EXPORTS     MiscDlgProc

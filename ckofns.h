@@ -1,0 +1,308 @@
+/******************************************************************************
+Header name: ckofns.h     Rev: 01  Programmer: C.P.Armstrong
+
+Header title:   OS/2 C-Kermit function prototypes
+
+Description:    Function prototypes for use with MSC 5.1 compiler to avoid all
+                the annoying warnings given when no prototype is provided.
+
+Modification History:
+    19-Nov-89   C.P.Armstrong   created
+    02-May-90   C.P.Armstrong   putchar undefing only done if MSC6.0s _MT is
+                                not defined, as the MT libs use a function
+                                instead of a macro.
+******************************************************************************/
+#ifdef putchar
+#undef putchar
+#endif
+
+#ifdef _MT
+int _putchar(int);
+#define putchar _putchar
+#endif
+
+typedef int (*PFUN)();  /* A prototype pointer to a function defintion */
+
+/* ckuus2.c */ int shopar();
+/* ckuus2.c */ int fstats();
+/* ckuus2.c */ int tstats();  
+/* ckuus2.c */ int rdebu(int);
+/* ckuus2.c */ int sdebu(int);
+/* ckuus2.c */ int dostat();
+/* ckuus2.c */ int usage(void);
+
+/* CKUUSR.C   */ char* bldlen(char*,char*);
+/* CKUUSR.C   */ int cmdini();
+/* CKUUSR.C   */ int cmdlin();
+/* CKUUSR.C   */ int doarg(char);
+/* CKUUSR.C   */ int docmd(int);
+/* CKUUSR.C   */ int  doconect();
+/* CKUUSR.C   */ int  doexit(int);
+/* CKUUSR.C   */ int  ermsg(char*);
+/* CKUUSR.C   */ int  fatal(char*);
+/* CKUUSR.C   */ int  herald();
+/* CKUUSR.C   */ char parser();
+/* CKUUSR.C   */ int setgen(char,char*,char*,char*);
+/* CKUUSR.C   */ int stptrap(int,int);
+/* CKUUSR.C   */ int transmit(char*,char);
+/* CKUUSR.C   */ int trap(int,int);
+/* CKUUSR.C   */ int trtrap();
+/* CKUUS3.C   */ int tlog(int,char*,char*,long);
+/* CKUUS3.C   */ int chkint();
+/* CKUUS3.C   */ int chkspd(int);
+/* CKUUS3.C   */ /* int debug(int,char*,char*,int); */
+/* CKUUS3.C   */ int doprm(int);
+/* CKUUS3.C   */ int dormt(int);
+/* CKUUS3.C   */ int intmsg(long);
+/* CKUUS3.C   */ int rfilop(char*,char);
+/* CKUUS3.C   */ int screen(int,char,long,char*);
+/* CKUUS3.C   */ int setcc(int*,int,int);
+/* CKUUS3.C   */ int setnum(int*,int,int,int);
+/* CKUUS3.C   */ int seton(int*);
+/* CKUCMD.C   */ int setatm(char*);
+/* CKUCMD.C   */ int addbuf(char*) ;
+/* CKUCMD.C   */ int addhlp(char*) ;
+/* CKUCMD.C   */ int chkwld(char*);
+/* CKUCMD.C   */ int clrhlp();
+/* CKUCMD.C   */ int cmcfm();
+/* CKUCMD.C   */ int cmdir(char*,char*,char**);
+/* CKUCMD.C   */ int cmfld(char*,char*,char**);
+/* CKUCMD.C   */ int cmifi(char*,char*,char**,int*);
+/* CKUCMD.C   */ int cmini(int);
+/* CKUCMD.C   */ int cmkey(struct keytab*,int,char*,char*);
+/* CKUCMD.C   */ int cmnum(char*,char*,int,int*);
+/* CKUCMD.C   */ int cmofi(char*,char*,char**);
+/* CKUCMD.C   */ int cmres();
+/* CKUCMD.C   */ int cmsavp(char*,int);
+/* CKUCMD.C   */ int cmsetp(char*);
+/* CKUCMD.C   */ int cmtxt(char*,char*,char**);
+/* CKUCMD.C   */ int dmphlp();
+/* CKUCMD.C   */ int gtword();
+/* CKUCMD.C   */ int lookup(struct keytab*,char*,int,int*);
+/* CKUCMD.C   */ int lower(char*);
+/* CKUCMD.C   */ int prompt();
+/* CKUCMD.C   */ int rdigits(char*);
+/* CKUCMD.C   */ int stripq(char*);
+/* CKUCMD.C   */ int test(int,int);
+/* CKCFN2.C   */ int srinit();
+/* CKCFN2.C   */ int ack() ;
+/* CKCFN2.C   */ int ack1(char*) ;
+/* CKCFN2.C   */ int chk1(char*);
+/* CKCFN2.C   */ unsigned int chk2(char*);
+/* CKCFN2.C   */ unsigned int chk3(char*);
+/* CKCFN2.C   */ char dopar(char);
+/* CKCFN2.C   */ int errpkt(char*);
+/* CKCFN2.C   */ int gattr(char*,struct zattr*);
+/* CKCFN2.C   */ int initattr(struct zattr*);
+/* CKCFN2.C   */ int input();
+/* CKCFN2.C   */ int nack();
+/* CKCFN2.C   */ int nxtpkt(int*);
+/* CKCFN2.C   */ int rcalcpsz();
+/* CKCFN2.C   */ int resend();
+/* CKCFN2.C   */ int rpack();
+/* CKCFN2.C   */ int rsattr(char*);
+/* CKCFN2.C   */ int sattr(int);
+/* CKCFN2.C   */ int scmd(char,char*);
+/* CKCFN2.C   */ int sigint(int,int);
+/* CKCFN2.C   */ int spack(char,int,int,char*);
+/* CKUSCR.C   */ int scrtime();
+/* CKUSCR.C   */ int flushi();
+/* CKUSCR.C   */ int login(char *);
+/* CKUSCR.C   */ int outSeq();
+/* CKUDIA.C   */ int didWeGet(char*,char*);
+/* CKUDIA.C   */ int ckdial(char*);
+/* CKUDIA.C   */ int dialint();
+/* CKUDIA.C   */ int dialtime();
+/* CKUDIA.C   */ int reset ();
+/* CKUDIA.C   */ int ttolSlow(char*,int);
+/* CKUDIA.C   */ int waitFor(char*);
+/* CKUDIA.C   */ char * xcpy(char*,char*,unsigned);
+/* CKCFNS.C   */ int adebu(char*,struct zattr*) ;
+/* CKCFNS.C   */ int canned(char*);
+/* CKCFNS.C   */ int clsif();
+/* CKCFNS.C   */ int clsof(int);
+/* CKCFNS.C   */ int cwd(char*);
+/* CKCFNS.C   */ int decode(char*,PFUN);
+/* CKCFNS.C   */ int encode(char);
+/* CKCFNS.C   */ int encstr(char*);
+/* CKCFNS.C   */ int getpkt(int);
+/* CKCFNS.C   */ int gnfile();
+/* CKCFNS.C   */ int opena(char*,struct zattr*);
+/* CKCFNS.C   */ int openi(char *);
+/* CKCFNS.C   */ int openo(char *);
+/* CKCFNS.C   */ int opent();
+/* CKCFNS.C   */ int putfil(char);
+/* CKCFNS.C   */ int putsrv(char);
+/* CKCFNS.C   */ int puttrm(char);
+/* CKCFNS.C   */ int rcvfil(char*);
+/* CKCFNS.C   */ int reof();
+/* CKCFNS.C   */ int reot();
+/* CKCFNS.C   */ int resetc();
+/* CKCFNS.C   */ int rinit(char*);
+/* CKCFNS.C   */ char* rpar();
+/* CKCFNS.C   */ int sdahead();
+/* CKCFNS.C   */ int sdata();
+/* CKCFNS.C   */ int seof(char*);
+/* CKCFNS.C   */ int seot();
+/* CKCFNS.C   */ int sfile(int);
+/* CKCFNS.C   */ int sinit(void);
+/* CKCFNS.C   */ int sipkt(char);
+/* CKCFNS.C   */ int sndhlp();
+/* CKCFNS.C   */ int spar(char *);
+/* CKCFNS.C   */ int syscmd(char*,char*);
+/* CKCFNS.C   */ int tinit();
+/* CKCMAI.C   */ int ckcmai(int,char**);
+
+/* CKCPRO.C   */ int proto();
+/* CKOCON.C   */ void vt_kp_send(char);
+                 void chars_in(unsigned char);
+                 void chars_out(void);
+/* CKOCON.C   */ char* chstr(int);
+/* CKOCON.C   */ void clrline_escape();
+/* CKOCON.C   */ void clrscreen();
+/* CKOCON.C   */ void clrtoeol();
+/* CKOCON.C   */ void clearscreen();
+/* CKOCON.C   */ void clrbol_escape();
+/* CKOCON.C   */ void clrboscr_escape();
+/* CKOCON.C   */ void clreoscr_escape();
+/* CKOCON.C   */ void bleep();
+/* CKOCON.C   */ void checkscreenmode();
+/* CKOCON.C   */ void cwrite(unsigned char);
+/* CKOCON.C   */ void newcursor();
+/* CKOCON.C   */ void strinsert(char*,char*);
+                 void screen_rollback(unsigned char *, unsigned char *);
+/* CKOCON.C   */ void toplinetocyclicbuffer();
+/* CKOCON.C   */ void vt100(unsigned char);
+/* CKOCON.C   */ void vt100read(unsigned char,unsigned char);
+/* CKOCON.C   */ void vtescape();
+/* CKOCON.C   */ void wrtch(unsigned char);
+/* CKOCON.C   */ void setmargins(char,char);
+/* CKOCON.C   */ void sendchar(unsigned char );
+/* CKOCON.C   */ void sendcharduplex(unsigned char );
+/* CKOCON.C   */ void sendstr(char*);
+/* CKOCON.C   */ void sendstrduplex(unsigned char *);
+/* CKOCON.C   */ void scrninit();
+/* CKOCON.C   */ void scroll(int,unsigned char,unsigned char);
+/* CKOCON.C   */ void savescreen();
+/* CKOCON.C   */ void scankey(unsigned char*,unsigned char*);
+/* CKOCON.C   */ void restorescreen();  /* Takes an ascreen* */
+/* CKOCON.C   */ void reversescreen();
+/* CKOCON.C   */ void rdserwrtscr(VOID);
+/* CKOCON.C   */ void readmchar_escape();
+/* CKOCON.C   */ int pnumber(unsigned char*);
+/* CKOCON.C   */ void movetoscreen(char*,char,char,int);
+/* CKOCON.C   */ void ipadl25();
+/* CKOCON.C   */ void killcursor();
+/* CKOCON.C   */ void lgotoxy(int,int);
+/* CKOCON.C   */ void line25();
+/* CKOCON.C   */ int helpconnect();
+/* CKOCON.C   */ void helpend();
+/* CKOCON.C   */ void helpline(char*);
+/* CKOCON.C   */ void helpstart(int, int);
+/* CKOCON.C   */ void doprinton(int);
+/* CKOCON.C   */ void doesc(char);
+/* CKOCON.C   */ void decdwl_escape(int);
+/* CKOCON.C   */ int conect();
+/* CKOCON.C   */ void cursordown();
+/* CKOCON.C   */ void cursorleft();
+/* CKOCON.C   */ void cursorright();
+/* CKOCON.C   */ void cursorup();
+/* CKOCON.C   */ int write_buf(char*, int);
+/* CKOTIO.C   */ int conxo(int,char*);
+/* CKOTIO.C   */ void alarm(unsigned);
+/* CKOTIO.C   */ int alarmack();
+/* CKOTIO.C   */ int alarminit();
+/* CKOTIO.C   */ void alarmthread(void);
+/* CKOTIO.C   */ int syscleanup();
+/* CKOTIO.C   */ int sysinit();
+/* CKOTIO.C   */ int ttchk();
+/* CKOTIO.C   */ int ttclos();
+/* CKOTIO.C   */ int ttflui();
+/* CKOTIO.C   */ int tthang();
+/* CKOTIO.C   */ int ttinc(int);
+/* CKOTIO.C   */ int ttinl(char*,int,int,char);
+/* CKOTIO.C   */ int ttiscom(HFILE);
+/* CKOTIO.C   */ int ttoc(char);
+/* CKOTIO.C   */ int ttoci(char);
+/* CKOTIO.C   */ int ttol(char*,int);
+/* CKOTIO.C   */ int ttopen(char*,int*,int);
+/* CKOTIO.C   */ int ttpkt(int,int,int);
+/* CKOTIO.C   */ int ttres();
+/* CKOTIO.C   */ int ttsettings(int,int);
+/* CKOTIO.C   */ int ttsndb();
+/* CKOTIO.C   */ int ttspeed();
+/* CKOTIO.C   */ int ttsspd(int);
+/* CKOTIO.C   */ int ttvt(int,int);
+/* CKOTIO.C   */ int ttxin(int,char*);
+/* CKOTIO.C   */ int ztime(char**);
+/* CKOTIO.C   */ int sleep(unsigned int);
+/* CKOTIO.C   */ int rtimer();
+/* CKOTIO.C   */ int static rdch();
+/* CKOTIO.C   */ int os2setflow(int);
+/* CKOTIO.C   */ int msleep(int);
+/* CKOTIO.C   */ int gtimer();
+/* CKOTIO.C   */ int concb(char);
+/* CKOTIO.C   */ int conchk();
+/* CKOTIO.C   */ int concooked();
+/* CKOTIO.C   */ int congm();
+/* CKOTIO.C   */ int coninc(int);
+/* CKOTIO.C   */ int conint(PFUN);
+/* CKOTIO.C   */ int connoi();
+/* CKOTIO.C   */ int conoc(char);
+/* CKOTIO.C   */ int conol(char*);
+/* CKOTIO.C   */ int conola(char**);
+/* CKOTIO.C   */ int conoll(char*);
+/* CKOTIO.C   */ int conraw();
+/* CKOTIO.C   */ int conres();
+/* CKOFIO.C   */ int chkfn(int);
+/* CKOFIO.C   */ int zchdir(char *);
+/* CKOFIO.C   */ int zchdsk(char);
+/* CKOFIO.C   */ int zchin(int,char*);
+/* CKOFIO.C   */ long zchki(char*);
+/* CKOFIO.C   */ int zchko(char*);
+/* CKOFIO.C   */ int zchout(int,char);
+/* CKOFIO.C   */ int zclose(int);
+/* CKOFIO.C   */ int zclosf();
+/* CKOFIO.C   */ void zdelet(char*);
+/* CKOFIO.C   */ char * zfindfile(char *);
+/* CKOFIO.C   */ char* zgtdir();
+/* CKOFIO.C   */ int zinfill();
+/* CKOFIO.C   */ int zkermini();
+/* CKOFIO.C   */ void zkself();
+/* CKOFIO.C   */ void zltor(char*,char*);
+/* CKOFIO.C   */ int zmail(char*,char*);
+/* CKOFIO.C   */ void znewn(char*,char**);
+/* CKOFIO.C   */ int znext(char*);
+/* CKOFIO.C   */ int zopeni(int,char*);
+/* CKOFIO.C   */ int zopeno(int, char*);
+/* CKOFIO.C   */ int zoutdump();
+/* CKOFIO.C   */ int zprint(char*,char*);
+/* CKOFIO.C   */ void zrtol(char*,char*);
+/* CKOFIO.C   */ int zsattr(struct zattr *);
+/* CKOFIO.C   */ int zsout(int,char*);
+/* CKOFIO.C   */ int zsoutl(int,char*);
+/* CKOFIO.C   */ int zsoutx(int,char*,int);
+/* CKOFIO.C   */ int zxcmd(char*);
+/* CKOFIO.C   */ int zxpand(char*);
+/* CKOCON.C   */ void AVIOReadCellStr(PCH,PUSHORT, USHORT, USHORT);
+/* CKOCON.C   */ void AVIOWrtCellStr(PCH, USHORT, USHORT, USHORT);
+/* CKOCON.C   */ void AVIOWrtNCell(PBYTE, USHORT, USHORT, USHORT);
+/* CKOCON.C   */ void AVIOScrollRt(USHORT, USHORT, USHORT, USHORT, USHORT, PBYTE);
+/* CKOCON.C   */ void AVIOScrollLf(USHORT, USHORT, USHORT, USHORT, USHORT, PBYTE);
+/* CKOCON.C   */ void AVIOScrollUp(USHORT, USHORT, USHORT, USHORT, USHORT, PBYTE);
+/* CKOCON.C   */ void AVIOScrollDn(USHORT, USHORT, USHORT, USHORT, USHORT, PBYTE);
+/* CKOCON.C   */ void AVIOWrtCharStrAtt(PCH,USHORT,USHORT,USHORT,PBYTE);
+/* CKOCON.C   */ void AVIOSetCurPos(USHORT,USHORT);
+/* CKOCON.C   */ void AVIOGetCurPos(PUSHORT,PUSHORT);
+/* CKOCON.C   */ void AVIOGetCurType(PVIOCURSORINFO );
+/* CKOCON.C   */ void AVIOSetCurType(PVIOCURSORINFO );
+/* CKOCON.c   */ void AVIOwrttyc(char*,int);
+/* CKCPRO.C   */ int wart();
+
+int dolog(int);
+int dohlp(int);
+int debopn(char*);
+int hmsg();
+int hmsga();
+int dohrmt();
+int dohset();

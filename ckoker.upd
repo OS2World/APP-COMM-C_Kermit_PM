@@ -1,0 +1,339 @@
+Update file started 18-Feb-90.  This does not contain any of the
+details of the chagnes made to convert Chris Adies CKOKER 1.0p into a
+Presentation Manager kermit.  Part of this conversion involves the
+addition of files CKOPM1.C, CKOPM2.C, CKOTEK.C, CKOPM.H, CKOKEY.H,
+CKOFNS.H, CKOSTD.C, CKODRV.C.
+
+CKOKER must now be compiled using the MicroSoft C 5.1 multithread
+runtime library and it's attendant include files.  I do not refer
+directly to any of the multithread include files.  They are reference
+by using the INCLUDE environment variable.  Since the PM and OS2
+include files are normally installed in the \include directory
+togehter with the regular includes and the multithread includes in
+the \include\mt directory the INCLUDE environment variable should be
+set up as follows (assuming hard drive C:);
+
+SET INCLUDE = C:\INCLUDE\MT;C:\INCLUDE
+
+This ensures that the mt includes are looked at first.
+
+What other compilers do for handling multithreaded applications I
+don't know.  If anyone wants to compile with a different compiler
+then they'll have to figure it out for themselves.  To date there are
+3 threads, apart from the main thread, created specifically by the program.  
+One in CKOCON.C, one in CKOPM1.C and one to impliment the alarm interrupt in
+CKOTIO.C.
+
+CKUUS3.C - trmtab changed to include tek4014 and vt100 options.
+         - doprm() case XYTERM modified to handle the new term
+           options.   
+CKUUS2.C - dohset() case XYTERM changed to sho info relevant to the
+           new SET TERM commands.
+CKCDEB.H - OS/2 defines putchar as a macro not a function.  It must
+           therefore be undefined before compilation.  The #undef
+           command is in this file.  This file MUST now be placed
+           after all the normal system includes but note that it
+           should go before the kermit includes.  It had to be moved
+           in the CKO files, and in CKUDIA.C, CKUSCR.C, CKUUS2.C,
+           CKUUS3.C, CKUUSR.C
+           
+CKUCMD.C - VioScrollUp and VioSetCurPos replaced with the AVIO equivalents.
+
+22-Feb-90  Herald date changed to 22-Feb-90  (in ckotio.c)
+CKUUS3.C - Support for setting the hardware handshaking lines on the PC under
+           OS/2.  This saves having to run "MODE.COM" to set each port each
+           time kermit is started.
+           Changes made to keytab struct flotab, case XYFLOW and a new function
+           os2_set_hand added.
+CKUUS2.C - Help for XYFLOW modified.
+CKOTIO.C - os_set_flow modified to read the DCBINFO first. It now sets values
+           which should correspond to the MODE ODSR, IDSR and OCTS commands.
+
+23-Feb-90
+CKOTIO.C - os_set_flow modified some more to set the bits properly! dsr etc.
+           default to ON, which is the system default.
+
+******************** The following updates refer to version 5A files *******
+CKOKER.MAK - CKUUS4.C, CKCFN3.C, CKCXLA.C added
+CKUUS4.C - #include "ckcdeb.h" moved to after the system includes.
+CKWART.C - #include "ckcdeb.h" moved to after the system includes.
+CKCDEB.H - OS/2 undef of putchar()
+CKCKER.H - More ASCII mnemonics added plus codes for diferent terminal modes.
+           These are not defined specific to OS/2 as they can be used by anyone.
+CKUCMD.C - VioScrollUp and VioSetCurPos replaced with the AVIO equivalents.
+CKUUS3.C - trmtab changed to include tek4014 and vt100 options.
+         - doprm() case XYTERM modified to handle the new term
+           options.  These changes are defined as OS/2 specific.
+CKUUS2.C - dohset() case XYTERM changed to sho info relevant to the
+           new SET TERM commands.  These changes are defined as OS/2 specific.
+CKUUSR.C - ckcdeb.h moved.  File to big to compile, MSCs annoying "out of heap"
+           message. With 14Mb, or something like that or virtual memory how can
+           this happen!!!!  So docmd() moved to new file CKUUS5.C
+CKOKER.MAK and CKOKER.LNK - ckuus5.c added
+CKUUS4.C - Definition of SIGALRM and alarm() added. OS/2 specific.
+CKCDEB.H - Braketed typdefs of long and char with #ifndefs.  These definitions
+           are made in the OS.2 headers.  However these headers are not included
+           in all kermit files.  Trying to typedef a second time them causes 
+           an error.
+CKOKER.MAK - CKWART.C removed from make and link, not needed!!
+---------------------------------
+20-Feb-90 C.P.Armstrong
+CKOKER.MAK - Several attempts made to get 5A kermit to compile and
+             link, so far to no avail. Matters not helped by me not
+             really knowing what I'm doing.  Using the /Gt compile
+             flags permits kermit to compile and link successfully.
+             However it wont run, giving a protection error.  Using
+             codeview I've isolated this to the malloc statment in
+             the printf() function in ckostd.c.  I've come accross
+             this problem with malloc() before and I've no idea what
+             to do about it.
+CKUUSR.C - The new reduced size one (19 Feb 90). ckcdeb.h moved 
+           "#endif COMMENT" changed to "#endif /* COMMENT */" at lines
+           879 and 1256.
+         - #include "ckcdeb.h" moved to after the system includes.
+         - The "#ifdef NETCONN"s around netcmd and nnets removed as they
+           are referenced in CKUUS3.C
+CKUUS4.C - #include "ckcdeb.h" moved to after the system includes. But before
+           all other include.
+           Definition of SIGALRM and alarm() added. OS/2 specific.
+CKUUS5.C - all local includes moved to after the system include.
+CKUUS3.C - trmtab changed to include tek4014 and vt100 options.
+         - doprm() case XYTERM modified to handle the new term
+           options.  These changes are defined as OS/2 specific.
+         - #include "ckcdeb.h" moved to after the system includes.
+         - Term_mode declared external.
+CKUUS2.C - dohset() case XYTERM changed to sho info relevant to the
+           new SET TERM commands.  These changes are defined as OS/2 specific.
+           #include "ckcdeb.h" moved to after the system includes.
+
+23-Feb-90  Files from 22-Feb-90
+CKUUS3.C - Characters after #endif's removed.
+         - ttyptab[] defined in wrong part of #ifdef.  Moved to OS2 bit
+CKCKER.h - Restored definitions of FF and ESC with #ifndef's.
+CKUCMD.h - Only define FF and ESC if not already defined
+           For some reason ckucmd.h has an OS2.H include in it.  So
+           when it is included in a cko???.c file, as is necessary if
+           FF and ESC are moved to ckucmd.h instead of being in
+           ckcker.h, along with the other ASCII definitions, all the
+           OS/2 definitions get redefined, which gives an error.
+           Since I generally don't need anything in ckucmd.h in the
+           cko??? files I'd rather not have to have it just to
+           include OS2.H.  Especially with an INCL_ I don't need,
+           which brings in more stuff than necessary which will cause
+           the "out of heap" compiler error. 
+CKUUS5.C - zfindfile() declared correctly.
+
+25-Feb-90
+
+CKOTIO.C - The alarm functions modified a bit.  Now uses _beginthread to start
+           the thread - maybe this was causeing the system crashes...
+         - ttinc() modified wrt timeouts.  The "untimed" timeout
+           setting assumed rdch() returned immediately if no char
+           waiting.  Not so. The DosRead waits forever and is
+           impervious to the alarm signals for some reason.  So
+           ttinc() for "untimed" reads sets a timeout of 0.1s then
+           goes ahead and repeatedly checks the rdch() return value
+           for a character.
+           ttinc() parameter now sets the number of centiseconds, not the
+           number plus 1cs.  A param of 0 means indefinite wait.
+
+CKUUS4.C - When a timer event occurs it should be acknowledged.  Acknowledge
+           call put into doinput() (OS/2 specific).
+         - doinput() character wait loop seems a little inconsistent.  If
+           ttinc(0) means wait forever then putting a keyboard interrupt check
+           after ttinc returns does not allow interruption.
+           The while loop terminates if a negative value of y is returned.  But
+           in the loop a negative value is checked for.
+           While loop therefore changed to continuous.  ttinc() value changed to
+           5cs.
+           No error checking for communications problems.  But the timeout should
+           be sufficient.
+
+26-Feb-90  Files of 25-Feb-90
+CKUUS4.C - signal() function in doinput() replaced by custom OS/2 version.
+         - signal must be acknowledged after resetting to default.  alarmack()
+           added for OS/2.
+         - OS/2 version configured so that the user can stop the input wait 
+           by hitting the keyboard (gentley!).
+           Note that the OS/2 routine in ttinc() has it's own set of timeout
+           parameters and is completely unaffected by the timer used to interrupt
+           the input routine.
+           I messed around with the {} layout to make suer I was doing the
+           right thing in the right place - I just can't figure out whats going
+           on when the {} pairs aren't obvious.
+         - Put coninc() in doinput() to swallow the user keyboard interruption
+           character.
+CKOTIO.C - ttgsp() added.  This simply calls ttspeed() which was already there!
+CKUUSR.C - output misses off the first character.  The for(;;) construct has been
+           replaced with while(*s++).  This seems to increment *s before doing
+           the test (very risky on NUL strings under OS/2!!!).  Changed it to
+           (*s)++ to see if helps it do the test then increment to the next char.
+           It didn't work - I got lots of characters, as if it was printing a 
+           character table (amazingly no protection fault!).
+           So, in the interests of simplicity I changed it back to the original
+           for(;;) loop, for OS/2 only, as the only change to that bit was the
+           return code.
+           
+28-Feb-90  Files of (116)
+           All files compiled okay!
+CKOTIO.C - the INPUT command now relies on coninc() and ttinc() waiting if a
+           time is specified, coninc() didn't and ttinc() waited centiseconds
+           instead of seconds.  So coninc() now uses a times getch routine if
+           necessary, coninc(0) is assumes to mean indefinite wait.  ttinc()
+           now converts it's parameter to seconds (i.e. (timo-1)*100).
+CKOPM1.C - Timed getch routine added - buff_tgetch().  Takes a parameter
+           of milliseconds (this seems to be the OS/2 unit of time).
+           
+02-Mar-90  Core files downloaded am 02-Mar-90
+CKUCMD.C - Bits in the "#ifdef COMMENT" cause an error.
+           "char *xx;" added.  No idea where COMMENT is defined, couldn't
+           find it in the kermit includes.
+           
+04-Mar-90 Core files downloaded 03-Mar-90
+CKUCMD.C - As above.
+CKOTEK.C - Shift printscreen should dump the Tektronix plot to the printer.
+CKOPM2.C - VK_PRINTSCRN chnaged to VK_SHPRINTSCRN if the shift key is down when
+           the PrintScreen button is pressed.
+CKOCON.C - vt100read modified.  Screen rollback loop moved to separate function
+           called screen_rollback().
+         - scankey() modified to trap VK_PRINTSCRN and call function to dump
+           the AVIO screen to the printer.  Putting the trap in here allow
+           rolled back screens to be dumped.  Another trap should probably be
+           inserted to allow dumping of the command line mode screen.
+CKCKER.H - Definitions for ODSR, IDSR, OCTS added.
+CKUUS3.C - SET FLOW ODTS OCTS or IDSR added.
+CKUUS2.C - Help for the new set flow commands.
+CKOTIO.C - os2_set_hand() command put in here.
+
+07-Mar-90
+CKOCON.C - Buffering system installed to reduce the number of WinPostMsg
+           calls requried for displaying a line.  Seems to speed things a 
+           little.
+CKOPM2.C - New avio_command message defined.  Same as WRCCHRSTAT except that
+           the string to be printed is "free()"d after printing and there is
+           no need for the main thread to wait for the PM thread to print the
+           string.
+CKOPM.H  - definition of WRCCHSTATD.
+11-Mar-90
+CKOPM1.C - New function to put the Vio cursor in the window when input is
+           requested and after a Vio resize.  Works great with Vaxes but not
+           so well with the IBM3090 XEDIT which always puts the cursor at the
+           bottom.  Never mind, you need the full screen with XEDIT anyway.
+CKOPM.H  - definition of WM_CURCHECK.
+
+24-Mar-90 C.P.Armstrong
+CKUUS4.C - Created a SESOPN function to perform opening and closing of 
+           the session log similar to debopn(). This is so the new menu 
+           commands can call the same opening function as the regular commands
+           thus preventing unnecessary duplication.
+           debopn() modified to simply close the file if a nul string is
+           sent.
+           tralog() and pktlog() created.
+CKOPM3.C - This new file contains all (so far) of the menu and dialog handling
+           routines.  So far the "Communications...", "Terminal..."
+           and "Logging..." menu items have prototype routines.  The
+           terminal one is the most complete, it works whether in
+           connect mode or not.  The communications dialog does not
+           check to see if the line is open already, so it has no
+           effect when in connect mode.  It does not check to see if
+           a valid port has been entered - this involves re-writing
+           quite a bit of the non-PM thread stuff.  The logging stuff
+           works in both connect and command line mode.  I don't know
+           about during file transfer.  Logging makes no allowances
+           for the compiler options which exclude loggin or
+           transaction logging.  The logging dialog should maybe have
+           a list of files, with the option to edit the list
+           selector/default extension.... one day.
+           It would be nice to be able to disable the terminal
+           tektronix dump format buttons when vt100 mode is selected,
+           it doesn't appear to be possible at present.  There is the
+           option to switch of the dump file - it should be included
+           in the dialog.
+CKORC.RC - This replaces the ckoptr.rc.  It contains all the resource
+           stuff such as pointers, dialogs, menus.
+CKORC.H  - Contains all the #defines for the resources.
+         
+CKOCON.C - Couldn't use ipadl25() from the PM thread to reflect the
+           change in terminal emulation caused by the menu item
+           during connect mode.  This because of the semaphoring
+           using when passing strings etc. for display from the
+           non-PM thread to the PM thread**.  ipadl25() uses many such
+           semaphores.  When the PM-thread sets them from a dialog
+           and then waits for itself to clear them we get deadlock as
+           the PM-thread is "suspended" while doing dialogs.  So
+           scankey() now does an ipadl() when it gets a null return
+           value.  It swallows the null.
+
+** This problem might be avoided by using WinMsgSemWait().
+
+           Minor changes to ckodrv, ckopm1, ckopm2, ckotio.
+
+02-Apr-90 C.P.Armstrong
+CKORC.RC
+CKORC.H
+CKOPM3.C - The "Edit" menu is now implimented.  It is now possible to copy
+           text from the VT100 window to the clipboard and to paste text from
+           the clipboard into the keyboard input buffer.  Pasted text is 
+           therefore treated as if it had been entered from the keyboard.
+           The keyboard buffer input routine now detects when the buffer is
+           full and waits for the output routine to make space.  This is because
+           the "Paste" function can enter text much more rapidly than the output
+           routine can remove it and transmit it. Text is marked by moving the
+           mouse with the "left" button depressed.  Text marking at present is 
+           a little slow, but I'll speed it up eventually.
+
+05-Apr-90 C.P.Armstrong
+CKOPM1,2,3,4 - Rearrangement of the modules in these files to get around the
+           exasperating "out of near heap" generated by MSC5.1  CKOPM1.C is
+           now down to about 700 lines!!!!!  Why it wont compile I've no idea
+           especially as over 2000 (although it's at bursting point).
+           
+CKOPM4.C - The Gpi window now loads a custom font for use in the Tektronix
+           window.  This is an image fixed spacing font small enough not to
+           overlap at the spacing corresponding to the Tektronix spacing.  This
+           is much more legible than using the system font.  Unfortunately the
+           only way to use the font is to have it as a separate file.  The 
+           a-holes at IBM/MS have set things up so you can't attach a font
+           to the end of a .exe like you can a menu, or dialog or pointer or
+           bitmap. Don't ask me why?  The font is loaded with GpiLoadFonts. This
+           is another prime example of a-holery.  All the ref.mans. say use
+           .FON for a font file extension.  So you give LoadFonts the filename
+           ckofon.fon expecting it to look in libpath or the current directory.
+           Does it hell.  I've no idea where it looks.  So you miss off the
+           extension and what does it supply..... .DLL.  Who are these people,
+           what the hell are they playing at.  Since the function uses libpath
+           why the hell can't it look for what it's told to in libpath.  What
+           else does LoadFonts do?  It just LoadsFonts right.  So why the hell
+           does it supply .DLL - give me strength.  So the font file is called
+           CKOFON.DLL so it can go into a users libpath.  Of course this 
+           extension means a user must rename it if it wants to load the
+           font publicly, thus causing kermit to fail to load it, so there must
+           be two copies, causing user to run out of disc space even sooner.
+           The other files required to make CKOFON.DLL are;
+                CKOTEK.FNT      The image Tektronix font (one day it'll be a
+                                vector font when I find out how to do it.)
+                                This file is created using FONTEDIT and is
+                                binary.
+                CKOFON.ASM      The dummy code segment for the .DLL file
+                CKOFON.RC       The resource compiler file
+                CKOFON.DEF      The linker definition file which causes the
+                                linker to build a dynamic link library.  It
+                                supplies the extension .DLL automatically.
+                                
+02-May-90 C.P.Armstrong
+CKCDEB.H - Tried to compile with MSC 6.0. Ugh, why do they do it?
+           Files which previously produced no warnings (let alone errors!) now
+           spew warnings left right and center.  However there seems to be a
+           serious problem with either the linker or the compiler.  The standard
+           C RTL functions printf(), puts() and putchar() don't work with
+           Advanced VIO.  So I've written versions which do, to replace the RTL
+           ones.  My printf() and puts() are used okay but the putchar()
+           function generates a "symbol defined more than once" during linking -
+           in spite of the fact that I am using /NOE and /NOD.  I don't know why
+           it's doing this.  The only way to stop it is to change the name of
+           putchar().  Horrible I realise but it's the only way. 
+CKOFNS.H - Changes related to above.
+CKOSTD.C - Ditto
+CKUSCR.C - #include "ckcdeb.h" moved to where it should have been in the 
+           first place.
+CKUDIA.C - Ditto

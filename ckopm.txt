@@ -1,0 +1,298 @@
+Most recent changes fixes are described at the end of this document.
+
+
+Suppliment to the OS/2 Kermit manual.
+
+
+C-Kermit for the OS/2 Presentation Manager
+
+Files
+
+    The latest version of C-kermit for PM consists of two files. The
+Kermit executable and a .DLL file.  The .DLL file is not a dynamic
+link library as the extension might suggest.  Rather it is a font
+file.  This file sould be placed in a place referenced by the
+config.sys "libpath" parameter.  The executable should be placed
+somewhere in "PATH", or added to the program list.
+    Due to an idiosyncracy in the PM font loading procedure "libpath"
+is only used to search for the font file if no pathname and extension
+are supplied.  In this case the supplied extension is .DLL, not .FON
+as would seem sensible. Using a .FON extension causes the font not to
+be loaded.
+    The .DLL file contains a custom font used in displaying Tektronix
+graphics text.  It is much smaller than the usual system font to make
+it legible even when a smaller than full screen window is used.  The
+normal sized system font characters tend to overlap.  The Tektronix
+font was designed to be legible on a VGA screen, the spacings etc.
+still may not be correct on lower resolution devices.  (Anyone caring
+to submit a font for use with lower resolution devices should send
+the .FNT file to <ARMSTRONG@E11.PHY.BNL.GOV> - if anyone knows how to
+make a vector font file please let me know).  A vector font is not
+used as character drawing is EXTREMELY slow and the characters are
+extremly difficult to read.
+
+    Since the original "kernel" mode OS/2 Kermit a number of new
+features have been added to the generic C-Kermit.  These include
+macros and a take file command language similar to that of MS-DOS
+Kermit.  These features will not be described in this suppliment.
+    Some new commands specific to OS/2 Kermit are the "SET TERMINAL
+TYPE" command and a number of "SET FLOW" commands. The syntax for
+these is shown below.
+
+
+                        New Commands
+        
+        SET TERMINAL TYPE    VT100   - VT100 emulation
+                             TEK4014 - Tektronix emulation
+        
+        SET FLOW ODSR ON             - Turn output DSR handshake ON 
+                      OFF            - Turn output DSR handshake OFF
+        SET FLOW IDSR ON             - Turn input DSR handshake ON
+                      OFF            - Turn input DSR handshake OFF
+        SET FLOW OCTS ON             - Turn output CTS handshake ON
+                      OFF            - Turn output CTS handshake OFF
+        (These commands correspond to the MODE ODSR, IDSR and OCTS
+        options)
+        
+A number of commands have been implimented as menu items.  At present
+there are more menu items displayed than implimented.  The
+"Terminal.." and "Communications..." menu items are implimented.  All
+of the "Log" menu items are implimented and the "Copy", "Paste",
+"Append" and "Copy and Paste" items in the "Edit" menu are
+implimented.
+
+"Terminal..."
+
+This displays a dialog which allows various terminal emulation
+characteristics to be modified.  This can be done at any time, i.e.
+in "Command line" mode, during "Connect" mode or during file
+transfer. Non of the terminal dialog parameters should affect file
+transfer.  The "Tektronix plot file format" refers to a dump file
+which is made while receiveing Tektronix graphics commands.  At
+present only the HPGL format is supported.  The dump file can be sent
+to a printer using the Shift-PrintScreen key combination.  This
+simply spawns a "PRINT" command, so it'll only do what "PRINT" does
+at the command line.  This happens to work for me, with 1.2 S.E., and
+an HP Laserjet with Plotter-in-a-Cartridge.  Tektronix output can be
+produced by logging the terminal session, editting out the garbage
+and printing the session log.  Selecting the WordPerfect or Tektronix
+file format will prevent the dump file from being made.
+
+"Communications..."
+
+This displays a dialog which allows various communications line
+parameters to be modified.  This can be done at any time, i.e.
+in "Command line" mode, during "Connect" mode or during file
+transfer.  
+***** NOTE this will affect file transfer at present so must be *****
+***** used with caution.                                        *****
+
+The "Flow Control" options refer to the standard C-Kermit flow
+control options.  The ODSR, IDSR and OCTS options are referred to as
+"Handshake" as this is how the OS/2 manual refers to them.
+
+"Log"
+
+The "Log" menu items are fairly obvious.  I've no idea whether there
+is a convention for the various log extensions.  The ones shown are
+the ones I use.  Eventually there will be a listbox in the log dialog
+which will show files with the extensions shown - with the option to
+change it.  I will be using a similar dialog to run "Take files"
+eventually, these will have the default extension ".KER".
+    
+"Edit"
+
+An area of the text screen i.e. the command line/VT100 window can be
+selected by positioning the mouse over the start of the region,
+pressing button 1 (usually the left button) and moving the mouse
+cursor to the end of the block.  The selected region will be
+highlighted.  Only the visible region can be selected.  The selected
+region can then be copied to the "clipboard" by selecting one of the
+"Edit" menu items.  Text in the clipboard can be transferred into
+Kermit by selecting the "Paste" item.  The function of the "Edit"
+copy items are;
+    "Copy"   Clears any text present in the clipboard and copies
+             the selected region into the clipboard.
+    "Append" Does not delete text already in the clipboard.  The
+             selected region is copied into the clipboard after any
+             text already present.
+    "Paste"  Enters any text in the clipboard into Kermit as if it
+             had been entered from the keyboard.  Carriage returns
+             are sent but not linefeeds (these cause problems with
+             Vax VMS editors!).  At low line speeds pasteing large
+             block of text can cause the error message "Keyboard
+             buffer not being emptied" to be displayed - at which
+             point the keyboard buffer starts to empty.  This is
+             because of a bug in the way the semaphore system works,
+             I think.  Anyway text does not seem to be lost.
+             NOTE There is no attempt made to truncate lines, at
+             present. Lines longer than 80 can lead to problems with
+             certain operating systems.  If pasting from the 1.2
+             System Editor ensure that the WordWrap mode was OFF
+             before  copying.  In WordWrap mode the System Editor
+             does not insert CRs or LFs at what appear to be the end
+             of lines.  This has caused me many problems.  It is not
+             a bug in the Kermit routines.
+    "Copy and Paste" 
+             Performs a "Copy" immediately followed by a "Paste"
+             
+    "Print graphics"
+             This uses the PM device independant
+             mechanism for printing, i.e. using whatever printer is
+             defined for the default spooler.  The function
+             used,PicPrint, is only available under OS/2 1.2 and
+             later I believe. During the printing process a metafile
+             called KERDEF.MET is created which is printed using
+             PicPrint.  These two names are what appear on the job
+             queue.  Once the print job appears on the job queue
+             KERDEF.MET can be deleted, on further printing can be
+             initiated.
+             
+    "Meta graphics"
+             Use this option to create a metafile containing the
+             current Tektronix emulation graphics.  The name of a
+             file is prompted for.  Metafiles are created using the
+             Helvetica vector font for the Tektronix text.             
+             
+Miscellaneous
+
+    Undocumented features....
+        The marking system sometimes leaves highlighted sections
+        floating around.
+        No official means of aborting transfer, or a hung connection.
+        A hung connection can be broken by selecting the
+        "Communications..." menu item and clicking on "Enter" having
+        selected a different port.  This closes the current port and
+        tries to connect to the new port.
+        
+    Special keys.
+        The VT100 keypad is emulated by the PC numeric keypad as one
+        might expect.  The exceptions to this are PF1 and VT100
+        comma.  There is no equivalent to the comma and PF1 would be
+        the NumLock key.  I have experimented with using the NumLock
+        key but have found no way of controlling the NumLock state
+        from with in PM.  It is possible in kernel mode to turn
+        NumLock on and off (as shown by the NumLock light).  The
+        closest to success under PM is to do it once, thereafter
+        keyboard input to ALL PM programs is disabled!  So PF1 maps
+        to F2 and comma to F3.  F1 is used for help.  It doesn't even
+        generate a normal PM character press message.
+            
+            VT100 numeric keypad            PC Key
+            PF1                             F2
+            PF2                             Keypad /
+            PF3                             Keypad *
+            PF4                             Keypad -
+              1                             1
+              2                             2
+              3                             3
+              4                             4
+              5                             5 
+              6                             6
+              7                             7
+              8                             8
+              9                             9
+              0                             0
+              -                             Keypad +
+              ,                             F3
+              .                             Keypad .
+              Enter                         Enter
+              
+        With NumLock ON the numric keys generate the numeric
+        characters displayed on them.
+        
+        Shift-PrintScreen  Send the Tektronix dump file to the
+                           printer.
+        PrintScreen        Send a dump of the VT100 screen to the
+                           printer.
+                           
+Chris Armstrong 16-Apr-90
+
+06-May-90 Update
+
+I finally discovered how to do PM graphics in a non-queue thread.
+It's not related to the presence of a queue of course, it just so
+happened that the boilerplate code used to kick off the queue thread
+contained the right function call without me realising it!  So the
+repaint now happens in a separate thread which means the PM doesn't
+"hang" when a Kermit with a complex Tektronix plot is resized etc..
+Resizing can be performed while a plot is in the process of being
+made without any ill effects (or none that I've detected - except
+that the redrawn lines seem to be thicker, which might be due to a
+rounding discrepancy in my scaling routines).  Resizing can also be
+preformed while the plot is in the process of redrawing.  This might
+sound obvious but it wasn't easy to achieve!
+I've retained the custom Tektronix font for Tektronix text as the
+vector fonts are not very readable at the dimensions required.
+
+
+The "Print graphics..." output should now include any text - in the
+default font.  For some reason I've not discovered the Gpi function
+used to select a vector font causes a memory protection violation
+when used with a presentation space associated with a printer device.
+The other routines work okay so I've simply omitted to select a font
+when printing.  Printing has yet to be converted to a separate thread
+so be prepared for a long period of inactivity when doing printing.
+I've tested the routines with an HP LASERJET II and it seems to work
+okay.  I tried using the driver for an HP 7475 and HP 7470 (plotters)
+and got some bizarre results.  The "kermit graph" appears on the
+print manger queue, says it's printing and disappears.  Nothing
+appears on the printer.  Then a continuous series of undefined
+"system" print jobs appear (I let it notch up 500 jobs before killing
+it).  Nothing ever makes it to the printer!  (HP Laserjet with
+Plotter cartridge).
+
+The "Meta graphics..." now produces a metafile.  This is not
+performed by a separate thread yet and does take some time to
+complete.  The name of a meta file is prompted for - don't use an
+existing file as GpiSaveMetaFile refuses to overwrite an existing
+file.  PICDISPLAY (IBM OS/2 1.2) doesn't recognise the Tektronix font
+so the metafile uses the "Helvetica" vector font for Tektronix text.
+
+All the menu items are implimented.  I gues that's how it might be
+marketed - I've removed the unimplimented menu items.  They require
+modifications to the kermit core source code which is currently in a
+state of flux.
+
+Things to do....
+Having discovered how to make PM calls from non-queue threads some of
+the calls which currently have to be made by posting messages to the
+PM thread could be moved to the main kermit thread.  This mainly
+relates to the advanced VIO display calls. The Tektronix emulation is
+not limited by this system at present and it has advantages in terms
+of repainting the Tek plots.  However the VT100 emulation might be
+speeded up by moving the Vio calls back to the Kermit thread or by
+doing direct memory writes and posting buffer updates to the PM.
+
+Put the "Print graphics..." and "Meta graphics..." routines in to
+threads separate from the PM queue thread.  This requires a system of
+semaphores to prevent printing whilst printing is in progress and for
+copying the current plot data so that screen updates do not affect
+the print or meta plots.
+
+Some means of interupting the Kermit thread when it gets hung
+waiting for I/O on the comms ports.  The  serial port timeouts don't
+seem to work properly.
+
+Some means for the PM thread to communicate dialog requests etc to
+the Kermit thread - especially the "Close" menu item which at present
+just closes down the whole process without warning the Kemrit thread.
+
+Mouse click in VT100 mode sending cursor movement commands to bring
+the VT100 cursor to the mouse position.
+
+Resolve the problem with the printer vector fonts.
+
+And many more!!
+
+C.P.Armstrong 10-May-90
+
+    Printing is now carried out by a Presentation Manager function new to
+OS/2 1.2 called PicPrint.  This means printing is probably no longer
+possible under IBM OS/2 1.1.  This is no great disaster since 1.1 should
+be upgraded to 1.2.  Printing still does not work with the HP Plotter
+dirver, but I'm pretty sure that it's the driver at fault as
+PicDisplay behaves in the same way.
+    The "thicker" lines on resizing the plot have been corrected.
+    
+29-May-90 C.P.Armstrong

@@ -1,0 +1,11 @@
+ckopm1.obj ckopm2.obj ckopm3.obj ckopm4.obj ckopm5.obj +
+ckopm6.obj ckostd.obj +
+ckofio.obj ckotio.obj ckocon.obj ckodrv.obj ckotek.obj +
+ckudia.obj ckuscr.obj ckucmd.obj +
+ckuusr.obj ckuus2.obj ckuus3.obj ckuus4.obj ckuus5.obj +
+ckcmai.obj ckcfns.obj ckcfn2.obj ckcfn3.obj +
+ckcxla.obj ckcpro.obj
+xkoker.exe /NOD /NOE /ALIGN:16 /CODEVIEW
+nul
+os2+llibcmt
+ckoker.def
